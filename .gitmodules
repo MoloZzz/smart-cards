@@ -1,6 +1,0 @@
-[submodule "tech/apps/service-core"]
-	path = tech/apps/service-core
-	url = https://github.com/MoloZzz/smart-cards
-[submodule "tech/apps/service-user"]
-	path = tech/apps/service-user
-	url = https://github.com/MoloZzz/smart-cards
