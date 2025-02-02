@@ -1,0 +1,12 @@
+docker-compose.yml
+docker-compose.dev.yml
+docker-compose.elk.yml
+docker-compose.common.yml
+
+/node_modules
+
+README.md
+.eslintrc.js
+.gitignore
+.dockerignore
+Dockerfile
