@@ -1,9 +1,10 @@
 import { Controller, Get } from '@nestjs/common';
 
 @Controller()
-export class AppController {
+export class ServiceUserController {
+
   @Get()
   async getHello(): Promise<string> {
-    return 'hello';
+    return "Hello from service-user";
   }
 }
