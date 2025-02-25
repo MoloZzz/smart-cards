@@ -14,11 +14,9 @@ export class LotteryService {
     ) {}
 
     async spinLottery(userId: number): Promise<CardEntity> {
-        console.log('i m here')
         const rarity = this.getRandomRarity([70, 25, 4, 1]);
-        console.log(rarity);
         const cardData = await lastValueFrom(this.generatorClient.send({ cmd: 'generate-card' }, { userId, rarity }));
-        console.log(cardData);
+        console.log(cardData)
         return this.cardRepo.save({
             name: cardData.name,
             rarity: cardData.rarity,

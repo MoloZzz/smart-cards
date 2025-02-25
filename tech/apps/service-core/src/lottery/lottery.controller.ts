@@ -9,7 +9,7 @@ export class LotteryController {
 
     @Get('/run')
     async run(@Req() req: Request){
-        const currentUser = req.user as IUser;
+        const currentUser = { id:1 } // req.user as IUser;
         return await this.serviceLottery.spinLottery(currentUser.id);
     }
 }
