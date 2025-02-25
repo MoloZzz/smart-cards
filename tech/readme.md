@@ -22,3 +22,15 @@ $ yarn run typeorm:migration:up
 # revert all recently ran migrations
 $ yarn run typeorm:migration:down
 ```
+
+
+## Start working
+### Running common containers
+```bash
+# This command starts containers with Postgres, RabbitMQ, and Redis
+$ docker compose -f docker-compose.common.yml up -d
+
+# This command starts containers with ELK
+# ELK does not need to be run during development
+$ docker compose -f docker-compose.elk.yml up -d
+```
