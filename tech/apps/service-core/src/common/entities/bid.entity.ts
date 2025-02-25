@@ -1,9 +1,9 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
-import { Auction } from './auction.entity';
-import { User } from './user.entity';
+import { AuctionEntity } from './auction.entity';
+import { UserEntity } from './user.entity';
 
 @Entity('bids')
-export class Bid {
+export class BidEntity {
     @PrimaryGeneratedColumn({ type: 'int', name: 'bid_id' })
     id: number;
 
@@ -20,9 +20,9 @@ export class Bid {
     bidTime: Date;
 
     // Зв’язки
-    @ManyToOne(() => Auction, (auction) => auction.bids)
-    auction: Auction;
+    @ManyToOne(() => AuctionEntity, (auction) => auction.bids)
+    auction: AuctionEntity;
 
-    @ManyToOne(() => User, (user) => user.bids)
-    bidder: User;
+    @ManyToOne(() => UserEntity, (user) => user.bids)
+    bidder: UserEntity;
 }

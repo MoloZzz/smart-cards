@@ -1,11 +1,11 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
-import { Card } from './card.entity';
-import { Auction } from './auction.entity';
-import { Bid } from './bid.entity';
-import { WalletTransaction } from './wallet-transaction.entity';
+import { CardEntity } from './card.entity';
+import { AuctionEntity } from './auction.entity';
+import { BidEntity } from './bid.entity';
+import { WalletTransactionEntity } from './wallet-transaction.entity';
 
 @Entity('users')
-export class User {
+export class UserEntity {
     @PrimaryGeneratedColumn({ type: 'int', name: 'user_id' })
     id: number;
 
@@ -40,21 +40,21 @@ export class User {
     lastLoginDate: Date | null;
 
     // Зв’язки
-    @OneToMany(() => Card, (card) => card.owner)
-    cards: Card[];
+    @OneToMany(() => CardEntity, (card) => card.owner)
+    cards: CardEntity[];
 
-    @OneToMany(() => Auction, (auction) => auction.seller)
-    auctionsAsSeller: Auction[];
+    @OneToMany(() => AuctionEntity, (auction) => auction.seller)
+    auctionsAsSeller: AuctionEntity[];
 
-    @OneToMany(() => Auction, (auction) => auction.winner)
-    auctionsAsWinner: Auction[];
+    @OneToMany(() => AuctionEntity, (auction) => auction.winner)
+    auctionsAsWinner: AuctionEntity[];
 
-    @OneToMany(() => Bid, (bid) => bid.bidder)
-    bids: Bid[];
+    @OneToMany(() => BidEntity, (bid) => bid.bidder)
+    bids: BidEntity[];
 
-    @OneToMany(() => WalletTransaction, (transaction) => transaction.sender)
-    sentTransactions: WalletTransaction[];
+    @OneToMany(() => WalletTransactionEntity, (transaction) => transaction.sender)
+    sentTransactions: WalletTransactionEntity[];
 
-    @OneToMany(() => WalletTransaction, (transaction) => transaction.receiver)
-    receivedTransactions: WalletTransaction[];
+    @OneToMany(() => WalletTransactionEntity, (transaction) => transaction.receiver)
+    receivedTransactions: WalletTransactionEntity[];
 }

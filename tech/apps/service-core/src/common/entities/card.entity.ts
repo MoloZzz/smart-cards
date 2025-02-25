@@ -1,8 +1,8 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
-import { User } from './user.entity';
+import { UserEntity } from './user.entity';
 
 @Entity('cards')
-export class Card {
+export class CardEntity {
     @PrimaryGeneratedColumn({ type: 'int', name: 'card_id' })
     id: number;
 
@@ -15,7 +15,7 @@ export class Card {
     @Column({ type: 'varchar', name: 'image_path' })
     imagePath: string;
 
-    @ManyToOne(() => User, (user) => user.cards)
+    @ManyToOne(() => UserEntity, (user) => user.cards)
     @Column({ type: 'int', name: 'owner_id' })
     ownerId: number;
 
@@ -29,6 +29,6 @@ export class Card {
     updatedAt: Date;
 
     // Зв’язки
-    @ManyToOne(() => User, (user) => user.cards)
-    owner: User;
+    @ManyToOne(() => UserEntity, (user) => user.cards)
+    owner: UserEntity;
 }

@@ -1,10 +1,10 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
-import { User } from './user.entity';
-import { Auction } from './auction.entity';
-import { Card } from './card.entity';
+import { UserEntity } from './user.entity';
+import { AuctionEntity } from './auction.entity';
+import { CardEntity } from './card.entity';
 
 @Entity('wallet_transactions')
-export class WalletTransaction {
+export class WalletTransactionEntity {
     @PrimaryGeneratedColumn({ type: 'int', name: 'transaction_id' })
     id: number;
 
@@ -30,15 +30,15 @@ export class WalletTransaction {
     createdAt: Date;
 
     // Зв’язки
-    @ManyToOne(() => User, (user) => user.sentTransactions, { nullable: true })
-    sender: User | null;
+    @ManyToOne(() => UserEntity, (user) => user.sentTransactions, { nullable: true })
+    sender: UserEntity | null;
 
-    @ManyToOne(() => User, (user) => user.receivedTransactions, { nullable: true })
-    receiver: User | null;
+    @ManyToOne(() => UserEntity, (user) => user.receivedTransactions, { nullable: true })
+    receiver: UserEntity | null;
 
-    @ManyToOne(() => Auction, (auction) => auction.id, { nullable: true })
-    relatedAuction: Auction | null;
+    @ManyToOne(() => AuctionEntity, (auction) => auction.id, { nullable: true })
+    relatedAuction: AuctionEntity | null;
 
-    @ManyToOne(() => Card, (card) => card.id, { nullable: true })
-    relatedCard: Card | null;
+    @ManyToOne(() => CardEntity, (card) => card.id, { nullable: true })
+    relatedCard: CardEntity | null;
 }

@@ -1,10 +1,10 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'typeorm';
-import { Card } from './card.entity';
-import { User } from './user.entity';
-import { Bid } from './bid.entity';
+import { CardEntity } from './card.entity';
+import { UserEntity } from './user.entity';
+import { BidEntity } from './bid.entity';
 
 @Entity('auctions')
-export class Auction {
+export class AuctionEntity {
     @PrimaryGeneratedColumn({ type: 'int', name: 'auction_id' })
     id: number;
 
@@ -39,15 +39,15 @@ export class Auction {
     updatedAt: Date;
 
     // Зв’язки
-    @ManyToOne(() => Card, (card) => card.id)
-    card: Card;
+    @ManyToOne(() => CardEntity, (card) => card.id)
+    card: CardEntity;
 
-    @ManyToOne(() => User, (user) => user.auctionsAsSeller)
-    seller: User;
+    @ManyToOne(() => UserEntity, (user) => user.auctionsAsSeller)
+    seller: UserEntity;
 
-    @ManyToOne(() => User, (user) => user.auctionsAsWinner, { nullable: true })
-    winner: User | null;
+    @ManyToOne(() => UserEntity, (user) => user.auctionsAsWinner, { nullable: true })
+    winner: UserEntity | null;
 
-    @OneToMany(() => Bid, (bid) => bid.auction)
-    bids: Bid[];
+    @OneToMany(() => BidEntity, (bid) => bid.auction)
+    bids: BidEntity[];
 }
