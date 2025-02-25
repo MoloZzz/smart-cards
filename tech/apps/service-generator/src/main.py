@@ -15,8 +15,8 @@ class CardGenerator:
         # Налаштування RabbitMQ
         self.connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
         self.channel = self.connection.channel()
+        self.channel.queue_declare(queue='RABBIT_MQ_GENERATOR_QUEUE', durable=True)
         self.channel.queue_declare(queue='generate_card', durable=True)
-        self.channel.queue_declare(queue='card_generated', durable=True)
 
     def generate_name(self, rarity):
         prefixes = {'epic': 'Epic', 'legendary': 'Legendary', 'rare': 'Rare'}
