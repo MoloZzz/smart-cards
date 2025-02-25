@@ -35,6 +35,13 @@
         "tsConfigPath": "apps/service-user/tsconfig.app.json"
       }
     },
+    "service-generator": {
+      "type": "application",
+      "root": "apps/service-generator",
+      "entryFile": "main.py",
+      "sourceRoot": "apps/service-generator/src",
+      "compilerOptions": {}
+    },
     "common": {
       "type": "library",
       "root": "libs/common",
