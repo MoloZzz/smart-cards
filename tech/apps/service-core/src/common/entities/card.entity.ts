@@ -11,7 +11,7 @@ export class CardEntity {
     name: string;
 
     @Column({ type: 'enum', enum: CardRarity, default: 'common' })
-    rarity: CardRarity;
+    rarity: string;
 
     @Column({ type: 'varchar', name: 'image_path' })
     imagePath: string;

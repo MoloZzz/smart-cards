@@ -1,5 +1,5 @@
-export enum AuctionStatus{
+export enum AuctionStatus {
     active = 'active',
     closed = 'closed',
-    cancelled = 'cancelled'
+    cancelled = 'cancelled',
 }

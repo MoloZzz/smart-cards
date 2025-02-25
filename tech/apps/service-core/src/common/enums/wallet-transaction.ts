@@ -1,6 +1,6 @@
-export enum WalletTransactionType{
+export enum WalletTransactionType {
     purchase = 'purchase',
-    sale = 'sale', 
-    lottery = 'lottery', 
-    transfer = 'transfer'
+    sale = 'sale',
+    lottery = 'lottery',
+    transfer = 'transfer',
 }

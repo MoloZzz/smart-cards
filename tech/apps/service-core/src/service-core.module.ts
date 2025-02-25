@@ -6,10 +6,13 @@ import { ConfigModule } from '@nestjs/config';
 import { PostgresqlModule } from '@app/db';
 import { entities } from './common/entities';
 import { migrations } from './common/migrations';
+import { LotteryModule } from './lottery/lottery.module';
+import { RmqModule } from '@app/common/rmq/rmq.module';
 
 @Module({
     imports: [
         UserModule,
+        LotteryModule,
         ConfigModule.forRoot({
             isGlobal: true,
             envFilePath: [`apps/service-core/.env`],
@@ -25,6 +28,10 @@ import { migrations } from './common/migrations';
             }),
         }),
         PostgresqlModule.register(entities, migrations, []),
+        RmqModule.register({
+            name: 'GENERATION_CLIENT',
+            queueName: 'RABBIT_MQ_CORE_QUEUE',
+        }),
     ],
     controllers: [ServiceCoreController],
 })
