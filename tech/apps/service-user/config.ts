@@ -5,5 +5,4 @@ dotenv.config({
     path: path.join(process.cwd(), `/apps/service-user/.env`),
 });
 
-export default () => ({
-});
+export default () => ({});
