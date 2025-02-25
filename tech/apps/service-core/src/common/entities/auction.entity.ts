@@ -2,6 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'ty
 import { CardEntity } from './card.entity';
 import { UserEntity } from './user.entity';
 import { BidEntity } from './bid.entity';
+import { AuctionStatus } from '../enums';
 
 @Entity('auctions')
 export class AuctionEntity {
@@ -26,7 +27,7 @@ export class AuctionEntity {
     @Column({ type: 'timestamp', name: 'end_time' })
     endTime: Date;
 
-    @Column({ type: 'enum', enum: ['active', 'closed', 'cancelled'], default: 'active' })
+    @Column({ type: 'enum', enum: AuctionStatus, default: 'active' })
     status: string;
 
     @Column({ type: 'int', name: 'winner_id', nullable: true })

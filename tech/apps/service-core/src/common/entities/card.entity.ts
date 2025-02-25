@@ -1,5 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
 import { UserEntity } from './user.entity';
+import { CardRarity } from '../enums';
 
 @Entity('cards')
 export class CardEntity {
@@ -9,8 +10,8 @@ export class CardEntity {
     @Column({ type: 'varchar' })
     name: string;
 
-    @Column({ type: 'enum', enum: ['common', 'rare', 'epic', 'legendary'], default: 'common' })
-    rarity: string;
+    @Column({ type: 'enum', enum: CardRarity, default: 'common' })
+    rarity: CardRarity;
 
     @Column({ type: 'varchar', name: 'image_path' })
     imagePath: string;

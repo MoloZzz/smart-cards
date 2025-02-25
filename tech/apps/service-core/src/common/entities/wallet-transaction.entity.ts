@@ -2,6 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
 import { UserEntity } from './user.entity';
 import { AuctionEntity } from './auction.entity';
 import { CardEntity } from './card.entity';
+import { WalletTransactionType } from '../enums';
 
 @Entity('wallet_transactions')
 export class WalletTransactionEntity {
@@ -17,8 +18,8 @@ export class WalletTransactionEntity {
     @Column({ type: 'decimal', name: 'amount', precision: 15, scale: 2 })
     amount: number;
 
-    @Column({ type: 'enum', enum: ['purchase', 'sale', 'lottery', 'transfer'], default: 'transfer' })
-    type: string;
+    @Column({ type: 'enum', enum: WalletTransactionType, default: 'transfer' })
+    type: WalletTransactionType;
 
     @Column({ type: 'int', name: 'related_auction_id', nullable: true })
     relatedAuctionId: number | null;
