@@ -5,11 +5,11 @@ import { IUser } from '@app/common';
 
 @Controller('lottery')
 export class LotteryController {
-    constructor(private readonly serviceLottery: LotteryService){}
+    constructor(private readonly serviceLottery: LotteryService) {}
 
     @Get('/run')
-    async run(@Req() req: Request){
-        const currentUser = { id: 1 } // req.user as IUser;
+    async run(@Req() req: Request) {
+        const currentUser = { id: 1 }; // req.user as IUser;
         return await this.serviceLottery.spinLottery(currentUser.id);
     }
 }

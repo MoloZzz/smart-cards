@@ -8,7 +8,6 @@ import { entities } from './common/entities';
 import { migrations } from './common/migrations';
 import { LotteryModule } from './lottery/lottery.module';
 import { RmqModule } from '@app/common/rmq/rmq.module';
-import { ServiceModule } from './controller/service/service.module';
 import { CardModule } from './card/card.module';
 
 @Module({
@@ -37,7 +36,6 @@ import { CardModule } from './card/card.module';
             name: 'GENERATION_CLIENT',
             queueName: 'RABBIT_MQ_GENERATOR_QUEUE',
         }),
-        ServiceModule,
         CardModule,
     ],
     controllers: [ServiceCoreController],

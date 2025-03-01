@@ -1,42 +1,39 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { Repository } from 'typeorm';
+import { CardRarity, RarityWeights } from '../common/enums';
+import { CardService } from '../card/card.service';
 import { CardEntity } from '../common/entities/card.entity';
-import { ClientProxy } from '@nestjs/microservices';
-import { lastValueFrom } from 'rxjs';
-import { CardRarity } from '../common/enums';
-import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class LotteryService {
-    constructor(
-        @Inject('GENERATION_CLIENT') private readonly generatorClient: ClientProxy,
-        @InjectRepository(CardEntity) private readonly cardRepo: Repository<CardEntity>,
-    ) {}
+    constructor(@Inject(CardService) private readonly cardService: CardService) {}
 
     async spinLottery(userId: number): Promise<CardEntity> {
-        const rarity = this.getRandomRarity([70, 25, 4, 1]);
-        const cardData = await lastValueFrom(this.generatorClient.send({ cmd: 'generate-card' }, { userId, rarity }));
-        console.log(cardData)
-        return this.cardRepo.save({
-            name: cardData.name,
-            rarity: cardData.rarity,
-            imagePath: cardData.imagePath,
-            ownerId: userId,
-            status: 'available',
-            createdAt: new Date(),
-            updatedAt: new Date(),
-            owner: null,
-        });
+        //TODO: замінити console.log на логування.
+        const rarity = this.getRandomRarity();
+        console.log(`Spinning lottery for userId=${userId}, rarity=${rarity}`);
+        const card = await this.cardService.sendRequestToGenerateCard(rarity, userId);
+        console.log(`Generated card: ${JSON.stringify(card)}`);
+        return card;
     }
 
-    private getRandomRarity(weights: number[]): string {
-        const total = weights.reduce((a, b) => a + b, 0);
-        const rand = Math.random() * total;
-        let sum = 0;
-        const rarities = ['common', 'rare', 'epic', 'legendary'];
-        for (let i = 0; i < weights.length; i++) {
-            sum += weights[i];
-            if (rand <= sum) return rarities[i];
+    private getRandomRarity(): CardRarity {
+        const rarities = [
+            { rarity: CardRarity.Common, weight: RarityWeights.Common },
+            { rarity: CardRarity.Rare, weight: RarityWeights.Rare },
+            { rarity: CardRarity.Epic, weight: RarityWeights.Epic },
+            { rarity: CardRarity.Legendary, weight: RarityWeights.Legendary },
+        ];
+        const totalWeight = rarities.reduce((sum, item) => sum + item.weight, 0);
+        const rand = Math.random() * totalWeight;
+        let cumulativeWeight = 0;
+
+        for (const item of rarities) {
+            cumulativeWeight += item.weight;
+            if (rand <= cumulativeWeight) {
+                return item.rarity;
+            }
         }
+        // Не впевнений що це вірний підхід, треба буде це перевірити
+        throw new Error('Unexpected error in random rarity selection');
     }
 }
