@@ -41,4 +41,8 @@ export class CardService {
     private async save(cardData: CardEntity): Promise<CardEntity> {
         return await this.cardRepo.save(cardData);
     }
+
+    public async saveGeneratedCard() {
+        throw new Error('Method not implemented.');
+    }
 }

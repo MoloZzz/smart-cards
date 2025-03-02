@@ -44,7 +44,7 @@ class CardGenerator:
             self.connection = pika.BlockingConnection(pika.ConnectionParameters('localhost', 5672))
             self.channel = self.connection.channel()
             self.channel.queue_declare(queue='RABBIT_MQ_GENERATOR_QUEUE', durable=True)
-            self.channel.queue_declare(queue='card_generated', durable=True)
+            self.channel.queue_declare(queue='RABBIT_MQ_CORE_QUEUE', durable=True)
             logger.info("Connected to RabbitMQ at localhost:5672")
         except pika.exceptions.AMQPConnectionError as error:
             logger.error(f"Failed to connect to RabbitMQ: {error}")
