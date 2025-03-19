@@ -7,6 +7,7 @@ import torch
 from accelerate import Accelerator
 import logging
 import time
+from dotenv import load_dotenv
 
 # Налаштування логування
 logging.basicConfig(level=logging.INFO)
@@ -14,7 +15,9 @@ logger = logging.getLogger(__name__)
 
 class CardGenerator:
     def __init__(self):
-        # Ініціалізація Accelerator для оптимізації
+        load_dotenv()  # Завантажує змінні з .env у os.environ
+        logger.info("Loaded environment variables from .env")
+
         self.accelerator = Accelerator()
         logger.info("Initializing Accelerator for Stable Diffusion")
 
@@ -41,11 +44,16 @@ class CardGenerator:
         if self.connection and not self.connection.is_closed:
             return
         try:
-            self.connection = pika.BlockingConnection(pika.ConnectionParameters('localhost', 5672))
+            rabbitmq_host = os.getenv('RABBITMQ_HOST', 'localhost')
+            rabbitmq_port = int(os.getenv('RABBITMQ_PORT', 5672))
+            generator_queue = os.getenv('RABBITMQ_GENERATOR_QUEUE', 'RABBIT_MQ_GENERATOR_QUEUE')
+            core_queue = os.getenv('RABBITMQ_CORE_QUEUE', 'RABBIT_MQ_CORE_QUEUE')
+
+            self.connection = pika.BlockingConnection(pika.ConnectionParameters(rabbitmq_host, rabbitmq_port))
             self.channel = self.connection.channel()
-            self.channel.queue_declare(queue='RABBIT_MQ_GENERATOR_QUEUE', durable=True)
-            self.channel.queue_declare(queue='RABBIT_MQ_CORE_QUEUE', durable=True)
-            logger.info("Connected to RabbitMQ at localhost:5672")
+            self.channel.queue_declare(queue=generator_queue, durable=True)
+            self.channel.queue_declare(queue=core_queue, durable=True)
+            logger.info(f"Connected to RabbitMQ at {rabbitmq_host}:{rabbitmq_port}")
         except pika.exceptions.AMQPConnectionError as error:
             logger.error(f"Failed to connect to RabbitMQ: {error}")
             raise
@@ -59,12 +67,11 @@ class CardGenerator:
 
     def generate_image(self, rarity: str) -> str:
         start_time = time.time()
-        prompt = f"a {rarity} fantasy trading card, detailed illustration of a {rarity} magical weapon or armor (like sword, axe, shield), vibrant colors, high quality, clear borders, fantasy art style, no psychedelic effects"
-        negative_prompt = "blurry, low quality, psychedelic, abstract, cartoonish, distorted"
+        prompt_template = os.getenv('GENERATION_PROMPT')
+        negative_prompt = os.getenv('GENERATION_NEGATIVE_PROMPT')
         
-        # Оптимізована генерація через Accelerator
         image = self.pipe(
-            prompt,
+            prompt_template,
             negative_prompt=negative_prompt,
             num_inference_steps=10,
             guidance_scale=7.0,
